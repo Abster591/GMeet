@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-icon {
+    @apply m-3 p-4 rounded-full bg-zinc-700 hover:bg-zinc-800 transition-all;
+  }
+
+  .control-icon {
+    @apply m-3 p-4 hover:bg-zinc-800 transition-all;
+  }
+
+  .chat-message {
+    @apply p-3 bg-gray-300 rounded-tl-lg rounded-br-lg my-2 w-4/5;
+  }
+
+  .chat-sender {
+    @apply font-bold;
+  }
+}

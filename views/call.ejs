@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./dist/output.css">
+    <link rel="stylesheet" href="./call.css">
+    <title>Content Page</title>
+</head>
+<script>
+    const ROOM_ID = "<%=roomId%>"
+</script>
+<script defer src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+<script src="/socket.io/socket.io.js" defer></script>
+<script src="/scripts/script.js" defer></script>
+<script src="https://kit.fontawesome.com/94d618afb0.js" crossorigin="anonymous"></script>
+
+<body class="bg-zinc-900">
+    <div class="main__container flex align-center justify-between p-5">
+        <div id="video-grid" class="rounded-md flex justify-center items-center flex-wrap gap-2"></div>
+        <div id="chat__section" class="rounded-md p-3 bg-slate-50 text-sm flex flex-col justify-between relative">
+            <h2 class="font-bold text-center text-2xl">Group Chat</h2>
+            <div class="chats m-3 h-4/5">
+                <ul class="flex flex-col">
+                    <li class="chat-message">
+                        <h2 class="chat-sender font-bold">User1</h2>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat sed
+                        deserunt ullam labore
+                        reprehenderit qui maiores nostrum odio vero possimus dolore provident in debitis laudantium
+                        repellat, sunt, optio necessitatibus quidem.
+                    </li>
+                    <li class="chat-message user-message">
+                        <h2 class="chat-sender font-bold">User2</h2>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Placeat sed
+                        deserunt ullam labore
+                        reprehenderit qui maiores nostrum odio vero possimus dolore provident in debitis laudantium
+                        repellat, sunt, optio necessitatibus quidem.
+                    </li>
+
+                </ul>
+            </div>
+            <div class="flex items-center">
+                <textarea placeholder="Enter your message here" rows="1"
+                    class="block rounded-full px-8 py-3 outline-none w-full border-zinc-900 bg-gray-300"
+                    oninput='this.style.height = "";this.style.height = (this.scrollHeight + 2) + "px"'></textarea>
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+        </div>
+    </div>
+    <div class="control__section w-full p-2 fixed bottom-0 mb-3 text-white flex text-xl justify-between flex-wrap">
+        <div class="meeting_details">
+            <span id="time" class="date mr-3 border-r-2 border-white pr-5">
+                11:59 PM
+            </span>
+            <span class="meeting_id m-3">
+                <%=roomId%>
+            </span>
+        </div>
+        <div class="icon_list mr-20">
+            <span class="icon btn-icon"><button><i class="fa-solid fa-microphone-slash"></i></button></span>
+            <span class="icon btn-icon"><button><i class="fa-solid fa-video"></i></button></span>
+            <span class="icon btn-icon"><button><i class="fa-solid fa-display"></i></button></span>
+            <span class="icon m-3 p-4 rounded-full  bg-red-600 hover:bg-red-700 transition-all"><button><i
+                        class="fa-solid fa-phone"></i></button></span>
+        </div>
+        <div class="control_icons">
+            <span class="icon control-icon"><button><i class="fa-solid fa-comment"></i></button></span>
+            <span class="icon control-icon "><button><i class="fa-solid fa-users"></i></button></span>
+        </div>
+    </div>
+</body>
+<script>
+    const time = document.getElementById('time');
+    const date = new Date();
+
+    const hours = date.getHours() % 12 ? date.getHours() % 12 : 12;
+    let minutes = date.getMinutes();
+    const ampm = (date.getHours()) >= 12 ? 'PM' : 'AM';
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    const strTime = hours + ':' + minutes + ' ' + ampm + ' ';
+    time.innerHTML = strTime;
+</script>
+
+
+</html>

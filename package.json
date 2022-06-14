@@ -1,0 +1,29 @@
+{
+  "name": "gmeet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "tailwind:css": "npx tailwindcss -i ./public/src/input.css -o ./public/dist/output.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "tailwindcss": "^3.1.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "peer": "^0.6.1",
+    "socket.io": "^4.5.1",
+    "uuid": "^8.3.2"
+  }
+}

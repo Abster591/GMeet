@@ -1,0 +1,29 @@
+#video-grid {
+  height: 85vh;
+  width: 75%;
+  align-content: center;
+}
+
+#chat__section {
+  width: 24%;
+  height: 85vh;
+}
+
+video {
+  margin-top: 0.5em;
+  height: 40%;
+  width: 40%;
+}
+
+textarea {
+  resize: none;
+  max-height: 80px;
+}
+
+.chats {
+  overflow: auto;
+}
+
+.user-message {
+  align-self: flex-end;
+}
