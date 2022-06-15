@@ -76,16 +76,12 @@ navigator.mediaDevices
     socket.on("user-connected", async (userId) => {
       setTimeout(connectToNewUser, 1000, userId, stream);
     });
-  })
-  .then(() => {
+
     videoToggle.addEventListener("click", toggleVideo);
-  })
-  .then(() => {
     audioToggle.addEventListener("click", toggleAudio);
-  })
-  .then(() => {
     myVideo.srcObject.getAudioTracks()[0].enabled = false;
   });
+
 const toggleVideo = function () {
   if (myVideo.srcObject.getVideoTracks()[0].enabled) {
     myVideo.srcObject.getVideoTracks()[0].enabled = false;
