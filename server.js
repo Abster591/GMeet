@@ -71,6 +71,6 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("user-connected", userId);
   });
   socket.on('chat', function(data){
-    socket.broadcast.emit('chat', data);
+    socket.broadcast.to(data.roomId).emit('chat', data);
 });
 });

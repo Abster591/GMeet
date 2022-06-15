@@ -27,3 +27,18 @@ textarea {
 .user-message {
   align-self: flex-end;
 }
+.btn-icon-disable {
+    margin: 0.75rem;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 8 0 / var(--tw-bg-opacity));
+    padding: 1rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .btn-icon-disable:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(138 3 3 / var(--tw-bg-opacity));
+  }
