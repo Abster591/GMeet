@@ -1,5 +1,6 @@
 const socket = io("/");
 console.log(ROOM_ID, username);
+const chats = document.querySelector('.chats');
 
 const peer = new Peer(undefined, {
   host: "/",
@@ -17,6 +18,7 @@ const displayMsg = () => {
     const html = `<li class="chat-message user-message"><h2 class="chat-sender font-bold">${username}</h2>${s}</li>`;
     msgList.insertAdjacentHTML("beforeend", html);
     document.querySelector(".block").value = "";
+    chats.scrollTop = chats.scrollHeight;
   }
 };
 document.querySelector(".fa-paper-plane").addEventListener("click", displayMsg);
@@ -33,6 +35,7 @@ socket.on("chat", function (data) {
   const html = `<li class="chat-message"><h2 class="chat-sender font-bold">${data.user}</h2>${data.message}</li>`;
   msgList.insertAdjacentHTML("beforeend", html);
   document.querySelector(".block").value = "";
+  chats.scrollTop = chats.scrollHeight;
 });
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
