@@ -49,7 +49,8 @@ const addVideoStream = (video, stream) => {
   });
   videoGrid.append(video);
 };
-
+const videoToggle = document.getElementById("videoToggle");
+const audioToggle = document.getElementById("audioToggle");
 const connectToNewUser = (userId, stream) => {
   const call = peer.call(userId, stream);
   const video = document.createElement("video");
@@ -57,15 +58,13 @@ const connectToNewUser = (userId, stream) => {
     addVideoStream(video, userVideoStream);
   });
 };
-
 navigator.mediaDevices
   .getUserMedia({
     video: true,
-    audio: false,
+    audio: true,
   })
   .then((stream) => {
     addVideoStream(myVideo, stream);
-
     peer.on("call", (call) => {
       call.answer(stream);
       const video = document.createElement("video");
@@ -77,8 +76,42 @@ navigator.mediaDevices
     socket.on("user-connected", async (userId) => {
       setTimeout(connectToNewUser, 1000, userId, stream);
     });
+  })
+  .then(() => {
+    videoToggle.addEventListener("click", toggleVideo);
+  })
+  .then(() => {
+    audioToggle.addEventListener("click", toggleAudio);
+  })
+  .then(() => {
+    myVideo.srcObject.getAudioTracks()[0].enabled = false;
   });
-
+const toggleVideo = function () {
+  if (myVideo.srcObject.getVideoTracks()[0].enabled) {
+    myVideo.srcObject.getVideoTracks()[0].enabled = false;
+    videoToggle.innerHTML = '<i class="fa-solid fa-video-slash"></i>';
+    document.getElementById("videoSpan").classList.remove("btn-icon");
+    document.getElementById("videoSpan").classList.add("btn-icon-disable");
+  } else {
+    myVideo.srcObject.getVideoTracks()[0].enabled = true;
+    videoToggle.innerHTML = '<i class="fa-solid fa-video"></i>';
+    document.getElementById("videoSpan").classList.remove("btn-icon-disable");
+    document.getElementById("videoSpan").classList.add("btn-icon");
+  }
+};
+const toggleAudio = function () {
+  if (myVideo.srcObject.getAudioTracks()[0].enabled) {
+    myVideo.srcObject.getAudioTracks()[0].enabled = false;
+    audioToggle.innerHTML = '<i class="fa-solid fa-microphone-slash"></i>';
+    document.getElementById("audioSpan").classList.remove("btn-icon");
+    document.getElementById("audioSpan").classList.add("btn-icon-disable");
+  } else {
+    myVideo.srcObject.getAudioTracks()[0].enabled = true;
+    audioToggle.innerHTML = '<i class="fa-solid fa-microphone"></i>';
+    document.getElementById("audioSpan").classList.remove("btn-icon-disable");
+    document.getElementById("audioSpan").classList.add("btn-icon");
+  }
+};
 // socket.on("user-connected", () => {
 //   connectToNewUser();
 // });
