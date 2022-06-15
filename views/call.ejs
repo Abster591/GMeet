@@ -23,30 +23,14 @@
         <div id="chat__section" class="rounded-md p-3 bg-slate-50 text-sm flex flex-col justify-between relative">
             <h2 class="font-bold text-center text-2xl">Group Chat</h2>
             <div class="chats m-3 h-4/5">
-                <ul class="flex flex-col">
-                    <li class="chat-message">
-                        <h2 class="chat-sender font-bold">User1</h2>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat sed
-                        deserunt ullam labore
-                        reprehenderit qui maiores nostrum odio vero possimus dolore provident in debitis laudantium
-                        repellat, sunt, optio necessitatibus quidem.
-                    </li>
-                    <li class="chat-message user-message">
-                        <h2 class="chat-sender font-bold">User2</h2>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Placeat sed
-                        deserunt ullam labore
-                        reprehenderit qui maiores nostrum odio vero possimus dolore provident in debitis laudantium
-                        repellat, sunt, optio necessitatibus quidem.
-                    </li>
-
+                <ul class="flex flex-col" id = "msg-list">
                 </ul>
             </div>
             <div class="flex items-center">
                 <textarea placeholder="Enter your message here" rows="1"
                     class="block rounded-full px-8 py-3 outline-none w-full border-zinc-900 bg-gray-300"
                     oninput='this.style.height = "";this.style.height = (this.scrollHeight + 2) + "px"'></textarea>
-                <i class="fa-solid fa-paper-plane"></i>
+                <button><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
     </div>

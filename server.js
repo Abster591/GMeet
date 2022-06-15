@@ -70,4 +70,7 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
   });
+  socket.on('chat', function(data){
+    socket.broadcast.emit('chat', data);
+});
 });
