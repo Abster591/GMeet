@@ -48,7 +48,7 @@ navigator.mediaDevices
     });
 
     socket.on("user-connected", async (userId) => {
-      await connectToNewUser(userId, stream);
+      setTimeout(connectToNewUser, 1000, userId, stream);
     });
   });
 
