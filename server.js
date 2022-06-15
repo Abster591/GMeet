@@ -54,9 +54,10 @@ app.get("/error", (req, res) => {
   res.send("something went wrong :(");
 });
 
-app.get("/:roomId", (req, res) => {
+app.get("/:roomId", isLoggedIn, (req, res) => {
   res.render("call", {
     roomId: req.params.roomId,
+    username: req.user.displayName,
   });
 });
 
@@ -70,7 +71,7 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
   });
-  socket.on('chat', function(data){
-    socket.broadcast.emit('chat', data);
-});
+  socket.on("chat", function (data) {
+    socket.to(data.roomId).emit("chat", data);
+  });
 });

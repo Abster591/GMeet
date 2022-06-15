@@ -1,38 +1,39 @@
 const socket = io("/");
-console.log(ROOM_ID);
+console.log(ROOM_ID, username);
 
 const peer = new Peer(undefined, {
   host: "/",
   port: "3001",
 });
-const displayMsg = ()=>{
-    const s = document.querySelector('.block').value;
-    if(s)
-    {
-        socket.emit('chat', {
-            message: s
-        });   
-    const msgList = document.getElementById('msg-list');
-    const html = `<li class="chat-message user-message"><h2 class="chat-sender font-bold">User1</h2>${s}</li>`
-    msgList.insertAdjacentHTML('beforeend',html);
-    document.querySelector('.block').value = "";
-    }
+const displayMsg = () => {
+  const s = document.querySelector(".block").value;
+  if (s) {
+    socket.emit("chat", {
+      message: s,
+      roomId: ROOM_ID,
+      user: username,
+    });
+    const msgList = document.getElementById("msg-list");
+    const html = `<li class="chat-message user-message"><h2 class="chat-sender font-bold">${username}</h2>${s}</li>`;
+    msgList.insertAdjacentHTML("beforeend", html);
+    document.querySelector(".block").value = "";
+  }
 };
-document.querySelector('.fa-paper-plane').addEventListener('click',displayMsg);
-document.querySelector('.block').addEventListener('keypress',(event)=>{
-    if(event.code==='Enter')
-    {
-        event.preventDefault();
-        displayMsg();
-    }   
+document.querySelector(".fa-paper-plane").addEventListener("click", displayMsg);
+document.querySelector(".block").addEventListener("keypress", (event) => {
+  if (event.code === "Enter") {
+    event.preventDefault();
+    displayMsg();
+  }
 });
-socket.on('chat',function(data){
-    const msgList = document.getElementById('msg-list');
-    const html = `<li class="chat-message"><h2 class="chat-sender font-bold">User1</h2>${data.message}</li>`
-    msgList.insertAdjacentHTML('beforeend',html);
-    document.querySelector('.block').value = "";
-    }
-);
+
+socket.on("chat", function (data) {
+  console.log(data, "ou");
+  const msgList = document.getElementById("msg-list");
+  const html = `<li class="chat-message"><h2 class="chat-sender font-bold">${data.user}</h2>${data.message}</li>`;
+  msgList.insertAdjacentHTML("beforeend", html);
+  document.querySelector(".block").value = "";
+});
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
@@ -74,7 +75,7 @@ navigator.mediaDevices
     });
 
     socket.on("user-connected", async (userId) => {
-        setTimeout(connectToNewUser, 1000, userId, stream);
+      setTimeout(connectToNewUser, 1000, userId, stream);
     });
   });
 
