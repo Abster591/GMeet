@@ -1,11 +1,12 @@
 const socket = io("/");
 console.log(ROOM_ID, username);
-const chats = document.querySelector('.chats');
+const chats = document.querySelector(".chats");
 
 const peer = new Peer(undefined, {
   host: "/",
   port: "3001",
 });
+
 const displayMsg = () => {
   const s = document.querySelector(".block").value;
   if (s) {
@@ -29,7 +30,7 @@ document.querySelector(".block").addEventListener("keypress", (event) => {
   }
 });
 
-socket.on("chat", function (data) {
+socket.on("chat", (data) => {
   console.log(data, "ou");
   const msgList = document.getElementById("msg-list");
   const html = `<li class="chat-message"><h2 class="chat-sender font-bold">${data.user}</h2>${data.message}</li>`;
@@ -37,6 +38,7 @@ socket.on("chat", function (data) {
   document.querySelector(".block").value = "";
   chats.scrollTop = chats.scrollHeight;
 });
+
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
@@ -54,6 +56,7 @@ const addVideoStream = (video, stream) => {
 };
 const videoToggle = document.getElementById("videoToggle");
 const audioToggle = document.getElementById("audioToggle");
+
 const connectToNewUser = (userId, stream) => {
   const call = peer.call(userId, stream);
   const video = document.createElement("video");
@@ -61,6 +64,7 @@ const connectToNewUser = (userId, stream) => {
     addVideoStream(video, userVideoStream);
   });
 };
+
 navigator.mediaDevices
   .getUserMedia({
     video: true,
