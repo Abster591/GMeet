@@ -1,7 +1,8 @@
 const socket = io("/");
 console.log(ROOM_ID, username);
 const chats = document.querySelector('.chats');
-
+const senders = [];
+const screenShare = document.getElementById('screenShare');
 const peer = new Peer(undefined, {
   host: "/",
   port: "3001",
@@ -56,6 +57,7 @@ const videoToggle = document.getElementById("videoToggle");
 const audioToggle = document.getElementById("audioToggle");
 const connectToNewUser = (userId, stream) => {
   const call = peer.call(userId, stream);
+  senders.push(call.peerConnection?.getSenders());
   const video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
     addVideoStream(video, userVideoStream);
@@ -67,9 +69,11 @@ navigator.mediaDevices
     audio: true,
   })
   .then((stream) => {
+
     addVideoStream(myVideo, stream);
     peer.on("call", (call) => {
-      call.answer(stream);
+        call.answer(stream);
+        senders.push(call.peerConnection?.getSenders());
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
         addVideoStream(video, userVideoStream);
@@ -83,6 +87,23 @@ navigator.mediaDevices
     videoToggle.addEventListener("click", toggleVideo);
     audioToggle.addEventListener("click", toggleAudio);
     myVideo.srcObject.getAudioTracks()[0].enabled = false;
+    screenShare.addEventListener('click', async () => {
+        let displayMediaStream = await navigator.mediaDevices.getDisplayMedia();
+        for(let i=0;i<senders.length;++i)
+            senders[i].find(sender => sender.track.kind === 'video').replaceTrack(displayMediaStream.getTracks()[0]);
+        myVideo.srcObject = displayMediaStream;
+        document.getElementById('screenSpan').classList.remove('btn-icon');
+        document.getElementById('screenSpan').classList.add('screen-btn');
+        screenShare.disabled = true;
+        displayMediaStream.getVideoTracks()[0].addEventListener('ended',()=>{  
+        document.getElementById('screenSpan').classList.remove('screen-btn');
+        document.getElementById('screenSpan').classList.add('btn-icon');
+        screenShare.disabled = false;
+        for(let i=0;i<senders.length;++i)
+            senders[i].find(sender => sender.track.kind === 'video').replaceTrack(stream.getTracks().find(track => track.kind === 'video'));
+        myVideo.srcObject = stream;
+        })
+      });
   });
 
 const toggleVideo = function () {
@@ -114,3 +135,25 @@ const toggleAudio = function () {
 // socket.on("user-connected", () => {
 //   connectToNewUser();
 // });
+// const shareScreen = ()=>{
+//     if(isSharing===false)
+//     {
+//     navigator.mediaDevices.getDisplayMedia({video:true,audio:false}).then((stream)=>{
+//         myVideo.srcObject = stream;
+//         isSharing = true;
+//         stream.getVideoTracks()[0].addEventListener('ended',()=>{
+//         navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((stream)=>{
+//             myVideo.srcObject=stream;
+//             isSharing = false;        
+//             })
+//         })
+//     })
+//     }
+//     else
+//     {
+//             navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((stream)=>{
+//             myVideo.srcObject=stream;
+//             isSharing = false;        
+//             })
+//     }
+// }
