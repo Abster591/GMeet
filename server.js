@@ -37,6 +37,8 @@ app.get("/", (req, res) => {
     date: dateInfo,
   });
 });
+app.get('/close',(req, res) => {
+    res.redirect('/')})
 
 app.post("/", isLoggedIn, (req, res) => {
   const { link } = req.body;
@@ -68,8 +70,12 @@ server.listen(port, () => console.log(`Listening on port ${port}`));
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId, userId) => {
+    console.log(userId);
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
+    socket.on('disconnect', () => {
+        socket.to(roomId).emit('user-disconnected', userId)
+      })
   });
   socket.on("chat", function (data) {
     socket.to(data.roomId).emit("chat", data);

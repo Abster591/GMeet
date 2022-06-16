@@ -2,6 +2,8 @@ const socket = io("/");
 console.log(ROOM_ID, username);
 const chats = document.querySelector('.chats');
 const senders = [];
+const peers = {};
+let myId = null;
 const screenShare = document.getElementById('screenShare');
 const peer = new Peer(undefined, {
   host: "/",
@@ -31,7 +33,6 @@ document.querySelector(".block").addEventListener("keypress", (event) => {
 });
 
 socket.on("chat", function (data) {
-  console.log(data, "ou");
   const msgList = document.getElementById("msg-list");
   const html = `<li class="chat-message"><h2 class="chat-sender font-bold">${data.user}</h2>${data.message}</li>`;
   msgList.insertAdjacentHTML("beforeend", html);
@@ -43,6 +44,7 @@ const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 peer.on("open", (id) => {
+  myId = id;
   socket.emit("join-room", ROOM_ID, id);
 });
 
@@ -56,12 +58,18 @@ const addVideoStream = (video, stream) => {
 const videoToggle = document.getElementById("videoToggle");
 const audioToggle = document.getElementById("audioToggle");
 const connectToNewUser = (userId, stream) => {
+  const conn = peer.connect(userId);
   const call = peer.call(userId, stream);
+  console.log(call);
   senders.push(call.peerConnection?.getSenders());
   const video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
     addVideoStream(video, userVideoStream);
   });
+  call.on('close', () => {
+    video.remove()
+  });
+  peers[userId] = call;
 };
 navigator.mediaDevices
   .getUserMedia({
@@ -72,18 +80,23 @@ navigator.mediaDevices
 
     addVideoStream(myVideo, stream);
     peer.on("call", (call) => {
+        peers[call.peer] = call;
         call.answer(stream);
         senders.push(call.peerConnection?.getSenders());
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
         addVideoStream(video, userVideoStream);
       });
+      call.on('close', () => {
+        video.remove()
+      });
     });
-
     socket.on("user-connected", async (userId) => {
       setTimeout(connectToNewUser, 1000, userId, stream);
     });
-
+    socket.on('user-disconnected', userId => {
+        if (peers[userId]) peers[userId].close()
+      })
     videoToggle.addEventListener("click", toggleVideo);
     audioToggle.addEventListener("click", toggleAudio);
     myVideo.srcObject.getAudioTracks()[0].enabled = false;
