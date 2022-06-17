@@ -37,8 +37,9 @@ app.get("/", (req, res) => {
     date: dateInfo,
   });
 });
-app.get('/close',(req, res) => {
-    res.redirect('/')})
+app.get("/close", (req, res) => {
+  res.redirect("/");
+});
 
 app.post("/", isLoggedIn, (req, res) => {
   const { link } = req.body;
@@ -73,9 +74,9 @@ io.on("connection", (socket) => {
     console.log(userId);
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
-    socket.on('disconnect', () => {
-        socket.to(roomId).emit('user-disconnected', userId)
-      })
+    socket.on("disconnect", () => {
+      socket.to(roomId).emit("user-disconnected", userId);
+    });
   });
   socket.on("chat", function (data) {
     socket.to(data.roomId).emit("chat", data);
