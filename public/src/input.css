@@ -4,7 +4,7 @@
 
 @layer components {
   .btn-icon {
-    @apply m-3 p-4 rounded-full bg-zinc-700 hover:bg-zinc-800 transition-all;
+    @apply m-1 p-4 rounded-full bg-zinc-700 hover:bg-zinc-800 transition-all;
   }
 
   .control-icon {
@@ -16,6 +16,6 @@
   }
 
   .chat-sender {
-    @apply font-bold;
+    @apply font-semibold;
   }
 }

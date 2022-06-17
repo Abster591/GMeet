@@ -11,7 +11,8 @@ const peer = new Peer(undefined, {
 });
 
 const displayMsg = () => {
-  const s = document.querySelector(".block").value;
+  const block = document.querySelector(".block");
+  const s = block.value;
   if (s) {
     socket.emit("chat", {
       message: s,
@@ -21,7 +22,8 @@ const displayMsg = () => {
     const msgList = document.getElementById("msg-list");
     const html = `<li class="chat-message user-message"><h2 class="chat-sender font-bold">${username}</h2>${s}</li>`;
     msgList.insertAdjacentHTML("beforeend", html);
-    document.querySelector(".block").value = "";
+    block.value = "";
+    block.style.height = "auto";
     chats.scrollTop = chats.scrollHeight;
   }
 };

@@ -1,3 +1,20 @@
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 #video-grid {
   height: 85vh;
   width: 75%;
@@ -29,7 +46,7 @@ textarea {
 }
 
 .btn-icon-disable {
-  margin: 0.75rem;
+  margin: 0.25rem;
   border-radius: 9999px;
   --tw-bg-opacity: 1;
   background-color: rgb(255 8 0 / var(--tw-bg-opacity));
@@ -44,9 +61,13 @@ textarea {
   background-color: rgb(138 3 3 / var(--tw-bg-opacity));
 }
 .screen-btn {
-  margin: 0.75rem;
+  margin: 0.25rem;
   border-radius: 9999px;
   --tw-bg-opacity: 1;
   background-color: rgb(27, 18, 18 / var(--tw-bg-opacity));
   padding: 1rem;
+}
+
+.chat-message {
+  word-wrap: break-word;
 }
