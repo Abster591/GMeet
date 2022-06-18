@@ -21,8 +21,8 @@
 <body class="bg-zinc-900">
     <div class="main__container flex align-center justify-between p-5">
         <div id="video-grid" class="rounded-md flex justify-center items-center flex-wrap gap-2"></div>
-        <div id="chat__section" class="rounded-md p-3 bg-slate-100 text-sm flex flex-col justify-between relative">
-            <h2 class="font-medium text-center text-xl text-gray-500">Group Chat</h2>
+        <div id="chat-section" class="rounded-md bg-slate-100 text-sm flex flex-col justify-between relative">
+            <h2 class="p-5 font-semibold text-xl text-gray-500">Group Chat</h2>
             <div class="chats m-3 h-4/5">
                 <ul class="flex flex-col" id="msg-list">
                     <li class="chat-message user-message">
@@ -32,18 +32,27 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex items-center space-between gap-1">
+            <div class="p-3 flex items-center space-between gap-1">
                 <textarea placeholder="Enter your message here" rows="1"
                     class="block rounded-full px-8 py-3 outline-none w-full border-zinc-900 bg-gray-300"
                     oninput='this.style.height = "";this.style.height = (this.scrollHeight + 2) + "px"'></textarea>
                 <button><i class="fa-solid fa-paper-plane send-button"></i></button>
             </div>
         </div>
+        <div id="participant-section" class="rounded-md bg-slate-100 text-sm flex flex-col">
+            <h2 class="p-5 font-semibold text-xl text-gray-500">Participants</h2>
+        </div>
+        <div id="information-section" class="rounded-md bg-slate-100 text-sm flex flex-col ">
+            <h2 class="p-5 font-semibold text-xl text-gray-500">Meeting details</h2>
+            <div class="meeting-info p-5">
+                hgoshoigisdsdh
+            </div>
+        </div>
     </div>
     <div class="control__section w-full p-2 fixed bottom-0 mb-3 text-white flex text-sm justify-between flex-wrap">
         <div class="meeting_details">
             <span id="time" class="date ml-1 mr-3 border-r-2 border-white pr-5">
-
+                00:00 AM
             </span>
             <span class="meeting_id m-3">
                 <%=roomId%>
@@ -62,8 +71,12 @@
                     href="/close"><button id="closeCall"><i class="fa-solid fa-phone"></i></button></a></span>
         </div>
         <div class="control_icons">
-            <span class="icon control-icon"><button><i class="fa-solid fa-comment"></i></button></span>
-            <span class="icon control-icon mr-0"><button><i class="fa-solid fa-users"></i></button></span>
+            <span id="btn-chats" class="icon control-icon rounded-full"><button><i
+                        class="fa-solid fa-comment"></i></button></span>
+            <span id="btn-users" class="icon control-icon rounded-full"><button><i
+                        class="fa-solid fa-users"></i></button></span>
+            <span id="btn-information" class="icon control-icon mr-0 rounded-full"><button><i
+                        class="fa-solid fa-circle-info"></i></button></span>
         </div>
     </div>
 </body>
@@ -81,6 +94,6 @@
     }, 1000)
 
 </script>
-
+<script src="/scripts/test.js"></script>
 
 </html>

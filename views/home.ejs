@@ -100,7 +100,7 @@
         let minutes = date.getMinutes();
         const ampm = (date.getHours()) >= 12 ? 'PM' : 'AM';
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        const strTime = hours + ':' + minutes + ' ' + ampm + ' ' + weekday + ', ' + month + ' ' + day;
+        const strTime = hours + ':' + minutes + ' ' + ampm + ' ' + weekday + ', ' + month + ' ' + date.getDate();
         dateTime.innerHTML = strTime;
     }, 1000);
 

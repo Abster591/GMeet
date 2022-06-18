@@ -16,14 +16,19 @@
 }
 
 #video-grid {
+  width: 100%;
   height: 85vh;
-  width: 75%;
   align-content: center;
+  transition: 0.5s;
 }
 
-#chat__section {
-  width: 24%;
+#chat-section,
+#participant-section,
+#information-section {
+  width: 0;
   height: 85vh;
+  overflow: hidden;
+  transition: 0.5s;
 }
 
 video {
@@ -70,4 +75,9 @@ textarea {
 
 .chat-message {
   word-wrap: break-word;
+}
+
+.active {
+  --tw-bg-opacity: 1;
+  background-color: rgb(39 39 42 / var(--tw-bg-opacity));
 }

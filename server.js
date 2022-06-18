@@ -31,6 +31,7 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
   username = req.user ? req.user.displayName : "";
+  console.log(req.user);
   const dateInfo = dateTime();
   res.render("home", {
     username: username,
@@ -71,7 +72,6 @@ server.listen(port, () => console.log(`Listening on port ${port}`));
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId, userId) => {
-    console.log(userId);
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
     socket.on("disconnect", () => {
