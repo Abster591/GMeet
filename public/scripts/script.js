@@ -4,6 +4,14 @@ const chats = document.querySelector(".chats");
 const senders = [];
 const peers = {};
 let myId = null;
+let mediaRecorder;
+let currentlyRecording = false;
+let recordStream;
+let timer = document.createElement('span');
+timer.style.textAlign = 'right';
+let int = null;
+let [seconds,minutes,hours] = [0,0,0];
+
 const screenShare = document.getElementById("screenShare");
 const peer = new Peer(undefined, {
   host: "/",
@@ -129,6 +137,32 @@ navigator.mediaDevices
         myVideo.srcObject = stream;
       });
     });
+    document.getElementById('recordToggle').addEventListener('click',async function(){
+        if(!currentlyRecording)
+        {
+         recordStream = await recordScreen();
+        let mimeType = 'video/webm';
+        mediaRecorder = createRecorder(recordStream,mimeType)
+        currentlyRecording = true;
+        addTimer();
+        recordStream.getVideoTracks()[0].addEventListener('ended',()=>{
+            mediaRecorder.stop();
+            currentlyRecording = false;
+            timer.remove();
+            clearInterval(int);
+        })
+        }
+        else
+        {
+            mediaRecorder.stop();
+            currentlyRecording = false;
+            recordStream.getTracks().forEach(function(track) {
+                track.stop();
+              });
+              timer.remove();
+              clearInterval(int);                
+        }
+    })
   });
 
 const toggleVideo = function () {
@@ -157,28 +191,64 @@ const toggleAudio = function () {
     document.getElementById("audioSpan").classList.add("btn-icon");
   }
 };
-// socket.on("user-connected", () => {
-//   connectToNewUser();
-// });
-// const shareScreen = ()=>{
-//     if(isSharing===false)
-//     {
-//     navigator.mediaDevices.getDisplayMedia({video:true,audio:false}).then((stream)=>{
-//         myVideo.srcObject = stream;
-//         isSharing = true;
-//         stream.getVideoTracks()[0].addEventListener('ended',()=>{
-//         navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((stream)=>{
-//             myVideo.srcObject=stream;
-//             isSharing = false;
-//             })
-//         })
-//     })
-//     }
-//     else
-//     {
-//             navigator.mediaDevices.getUserMedia({video:true,audio:true}).then((stream)=>{
-//             myVideo.srcObject=stream;
-//             isSharing = false;
-//             })
-//     }
-// }
+async function recordScreen() {
+    return await navigator.mediaDevices.getDisplayMedia({
+        audio: true, 
+        video: { mediaSource: "screen"}
+    });
+}
+function createRecorder (stream, mimeType) {
+    let recordedChunks = []; 
+
+    const mediaRecorder = new MediaRecorder(stream);
+  
+    mediaRecorder.ondataavailable = function (e) {
+      if (e.data.size > 0) {
+        recordedChunks.push(e.data);
+      }  
+    };
+    mediaRecorder.onstop = function () {
+       saveFile(recordedChunks);
+       recordedChunks = [];
+    };
+    mediaRecorder.start(200); 
+    return mediaRecorder;
+  }
+  function saveFile(recordedChunks){
+    const blob = new Blob(recordedChunks, {
+       type: 'video/webm'
+     });
+     let filename = window.prompt('Enter file name'),
+         downloadLink = document.createElement('a');
+     downloadLink.href = URL.createObjectURL(blob);
+     downloadLink.download = `${filename}.webm`;
+ 
+     document.body.appendChild(downloadLink);
+     downloadLink.click();
+     URL.revokeObjectURL(blob); 
+     document.body.removeChild(downloadLink);
+ }
+const addTimer = function()
+{
+    document.querySelector('.meeting_details').appendChild(timer);
+    timer.innerHTML = `<span id="time" class="date ml-1 mr-3 border-r-2 border-white pr-5">Recording-00:00:00</span>`
+    if(int!==null)
+        clearInterval(int);
+    [seconds,minutes,hours] = [0,0,0];
+    int = setInterval(displayTimer,1000);
+}   
+function displayTimer(){
+            seconds++;
+            if(seconds == 60){
+                seconds = 0;
+                minutes++;
+                if(minutes == 60){
+                    minutes = 0;
+                    hours++;
+                }
+            }
+ let h = hours < 10 ? "0" + hours : hours;
+ let m = minutes < 10 ? "0" + minutes : minutes;
+ let s = seconds < 10 ? "0" + seconds : seconds;
+ timer.innerHTML = ` <span id="time" class="date ml-1 mr-3 border-r-2 border-white pr-5">Recording-${h} : ${m} : ${s}</span>`;
+}    
