@@ -15,6 +15,10 @@
   background: #555;
 }
 
+#tooltip-text {
+  display: none;
+}
+
 #video-grid {
   width: 100%;
   height: 85vh;

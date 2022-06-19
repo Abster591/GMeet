@@ -53,8 +53,22 @@
         </div>
         <div id="information-section" class="rounded-md bg-slate-100 text-sm flex flex-col ">
             <h2 class="p-5 font-semibold text-xl text-gray-500">Meeting details</h2>
-            <div class="meeting-info p-5">
-                hgoshoigisdsdh
+            <div class="meeting-info p-5 bg-white rounded-md">
+                <div class="font-semibold">Meeting link</div>
+                <div id="meeting-link" class="text-gray-600 py-2">
+                    http://localhost:3000/<%=roomId%>
+                </div>
+                <button id="copy-btn">
+                    <div
+                        class="mt-4 text-md text-sky-500 font-semibold hover:shadow-[0_0_81px_0_rgba(0,0,0,0.3)] py-4 px-2 rounded-md transition-all">
+                        <span id="tooltip-text"
+                            class='absolute z-50 rounded shadow-lg p-1 bg-black -mt-9 text-white font-normal'>
+                            Meeting link copied</span>
+                        <span class="mr-3"><i class="fa-solid fa-copy"></i></span> Copy
+                        Meeting
+                        link
+                    </div>
+                </button>
             </div>
         </div>
     </div>
