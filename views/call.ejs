@@ -39,8 +39,17 @@
                 <button><i class="fa-solid fa-paper-plane send-button"></i></button>
             </div>
         </div>
-        <div id="participant-section" class="rounded-md bg-slate-100 text-sm flex flex-col">
-            <h2 class="p-5 font-semibold text-xl text-gray-500">Participants</h2>
+        <div id="participant-section" class="rounded-md bg-slate-100 flex flex-col">
+            <h2 class="p-5 font-semibold text-xl text-gray-500 shadow-sm">Participants</h2>
+            <div class="participants">
+                <ul id="participant__list" class="text-xl bg-slate-50 overflow-auto">
+                    <li class="px-5 py-2 flex items-center shadow-sm"><i class="fa-solid fa-user"></i><span
+                            class="text-base ml-5">username
+                        </span><button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all"
+                            style="border-radius:50%;"><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="information-section" class="rounded-md bg-slate-100 text-sm flex flex-col ">
             <h2 class="p-5 font-semibold text-xl text-gray-500">Meeting details</h2>

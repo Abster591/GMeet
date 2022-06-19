@@ -31,7 +31,6 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
   username = req.user ? req.user.displayName : "";
-  console.log(req.user);
   const dateInfo = dateTime();
   res.render("home", {
     username: username,
@@ -70,12 +69,28 @@ const io = require("socket.io")(server);
 const port = process.env.PORT;
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
+const users = {};
+
 io.on("connection", (socket) => {
-  socket.on("join-room", (roomId, userId) => {
+  socket.on("join-room", (roomId, userId, username) => {
+    const newUser = {
+      id: userId,
+      name: username,
+    };
+    if (users[roomId]) {
+      users[roomId].push(newUser);
+    } else {
+      users[roomId] = new Array(newUser);
+    }
+
     socket.join(roomId);
+
+    io.to(roomId).emit("participant-list-updated", users[roomId]);
+
     socket.to(roomId).emit("user-connected", userId);
     socket.on("disconnect", () => {
-      socket.to(roomId).emit("user-disconnected", userId);
+      users[roomId] = users[roomId].filter(({ id }) => id != userId);
+      socket.to(roomId).emit("user-disconnected", userId, users[roomId]);
     });
   });
   socket.on("chat", function (data) {

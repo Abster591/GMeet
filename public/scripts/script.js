@@ -18,6 +18,27 @@ const peer = new Peer(undefined, {
   port: "3001",
 });
 
+const createParticipants = (users) => {
+  const participantList = document.getElementById("participant__list");
+  participantList.innerHTML = "";
+  users.forEach((user) => {
+    const li = document.createElement("li");
+    li.className += "px-5 py-2 flex items-center shadow-sm";
+    li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span><button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all" style="border-radius:50%;"><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>`;
+    li.setAttribute("id", user.id);
+    participantList.appendChild(li);
+  });
+};
+
+socket.on("participant-list-updated", (users) => {
+  createParticipants(users);
+});
+
+const removeParticipant = (id) => {
+  const participant = document.querySelector(`[id="${id}"]`);
+  participant.remove();
+};
+
 const displayMsg = () => {
   const block = document.querySelector(".block");
   const s = block.value;
@@ -57,7 +78,7 @@ myVideo.muted = true;
 
 peer.on("open", (id) => {
   myId = id;
-  socket.emit("join-room", ROOM_ID, id);
+  socket.emit("join-room", ROOM_ID, id, username);
 });
 
 const addVideoStream = (video, stream) => {
@@ -107,7 +128,8 @@ navigator.mediaDevices
     socket.on("user-connected", async (userId) => {
       setTimeout(connectToNewUser, 1000, userId, stream);
     });
-    socket.on("user-disconnected", (userId) => {
+    socket.on("user-disconnected", (userId, users) => {
+      createParticipants(users);
       if (peers[userId]) peers[userId].close();
     });
     videoToggle.addEventListener("click", toggleVideo);
