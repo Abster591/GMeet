@@ -171,6 +171,7 @@ navigator.mediaDevices
           currentlyRecording = true;
           addTimer();
           recordStream.getVideoTracks()[0].addEventListener("ended", () => {
+            document.getElementById("videoRecordSpan").classList.remove("active");
             mediaRecorder.stop();
             currentlyRecording = false;
             timer.remove();
