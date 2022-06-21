@@ -30,9 +30,9 @@ const createParticipants = (users) => {
     {
     li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span>
     <button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all" style="border-radius:50%;" id=${user.id}><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>
-    <span class="icon btn-icon-disable" id =${user.id+'#s'} style="display:none;"><button id = ${user.id+'#'}><i class="fa-solid fa-microphone-slash ml-auto"></i></button></span>
-    <span class="icon btn-icon" id=${user.id+'$s'} style ="display:none"><button id = ${user.id+'$'}><i class="fa-solid fa-video ml-auto"></i></button></span>
-    <span class="icon btn-icon-disable" id =${user.id+'%s'} style = "display:none"><button id = ${user.id+'%'}><i class="fa-solid fa-phone-slash ml-auto"></i></button></span>`;
+    <span class="icon btn-icon-admin-disable" id =${user.id+'#s'} style="display:none;"><button id = ${user.id+'#'}><i class="fa-solid fa-microphone-slash ml-auto"></i></button></span>
+    <span class="icon btn-icon-admin" id=${user.id+'$s'} style ="display:none"><button id = ${user.id+'$'}><i class="fa-solid fa-video ml-auto"></i></button></span>
+    <span class="icon btn-icon-admin-disable" id =${user.id+'%s'} style = "display:none"><button id = ${user.id+'%'}><i class="fa-solid fa-phone-slash ml-auto"></i></button></span>`;
     }
     else
     {
@@ -285,14 +285,14 @@ const toggleVideo = function () {
         let current_button = document.getElementById(`${data.id}$s`)
         if(data.videoOn)
         {
-            current_button.classList.add("btn-icon");
-            current_button.classList.remove("btn-icon-disable");
+            current_button.classList.add("btn-icon-admin");
+            current_button.classList.remove("btn-icon-admin-disable");
             document.getElementById(`${data.id}$`).innerHTML = '<i class="fa-solid fa-video ml-auto"></i>'
         }
         else
         {
-            current_button.classList.add("btn-icon-disable");
-            current_button.classList.remove("btn-icon");
+            current_button.classList.add("btn-icon-admin-disable");
+            current_button.classList.remove("btn-icon-admin");
             document.getElementById(`${data.id}$`).innerHTML = '<i class="fa-solid fa-video-slash ml-auto"></i>'
         }
     }
@@ -326,14 +326,14 @@ socket.on("audioAdmin",(data)=>{
         let current_button = document.getElementById(`${data.id}#s`)
         if(data.audioOn)
         {
-            current_button.classList.add("btn-icon");
-            current_button.classList.remove("btn-icon-disable");
+            current_button.classList.add("btn-icon-admin");
+            current_button.classList.remove("btn-icon-admin-disable");
             document.getElementById(`${data.id}#`).innerHTML = '<i class="fa-solid fa-microphone ml-auto"></i>';
         }
         else
         {
-            current_button.classList.add("btn-icon-disable");
-            current_button.classList.remove("btn-icon");
+            current_button.classList.add("btn-icon-admin-disable");
+            current_button.classList.remove("btn-icon-admin");
             document.getElementById(`${data.id}#`).innerHTML = '<i class="fa-solid fa-microphone-slash ml-auto"></i>'
         }
     }

@@ -64,6 +64,35 @@ textarea {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.btn-icon-admin{
+    margin: 0.25rem;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(63 63 70 / var(--tw-bg-opacity));
+    padding: 0.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .btn-icon-admin:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(39 39 42 / var(--tw-bg-opacity));
+  }
+.btn-icon-admin-disable {
+    margin: 0.25rem;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 8 0 / var(--tw-bg-opacity));
+    padding: 0.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-icon-admin-disable:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(138 3 3 / var(--tw-bg-opacity));
+  }
 
 .btn-icon-disable:hover {
   --tw-bg-opacity: 1;
