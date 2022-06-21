@@ -1,5 +1,6 @@
 const socket = io("/");
-console.log(ROOM_ID, username);
+console.log(ROOM_ID, username,isAdmin);
+console.log(isAdmin==="true");
 const chats = document.querySelector(".chats");
 const senders = [];
 const peers = {};
@@ -24,16 +25,81 @@ const createParticipants = (users) => {
   users.forEach((user) => {
     const li = document.createElement("li");
     li.className += "px-5 py-2 flex items-center shadow-sm";
-    li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span><button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all" style="border-radius:50%;"><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>`;
+    console.log(isAdmin);
+    if(isAdmin==="true"&&user.id!==myId)
+    {
+    li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span>
+    <button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all" style="border-radius:50%;" id=${user.id}><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>
+    <span class="icon btn-icon-disable" id =${user.id+'#s'} style="display:none;"><button id = ${user.id+'#'}><i class="fa-solid fa-microphone-slash ml-auto"></i></button></span>
+    <span class="icon btn-icon" id=${user.id+'$s'} style ="display:none"><button id = ${user.id+'$'}><i class="fa-solid fa-video ml-auto"></i></button></span>
+    <span class="icon btn-icon-disable" id =${user.id+'%s'} style = "display:none"><button id = ${user.id+'%'}><i class="fa-solid fa-phone-slash ml-auto"></i></button></span>`;
+    }
+    else
+    {
+        li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span>`;
+    }   
     li.setAttribute("id", user.id);
     participantList.appendChild(li);
   });
+  if(isAdmin==='true')
+  {
+  users.forEach((user)=>{
+    if(user.id!==myId)
+    {
+        document.getElementById(`${user.id}`).addEventListener('click',()=>{
+            if(document.getElementById(`${user.id}$s`).style.display === "none")
+            {
+            document.getElementById(`${user.id}$s`).style.display = "";
+            document.getElementById(`${user.id}#s`).style.display = "";
+            document.getElementById(`${user.id}%s`).style.display = "";
+            }
+            else
+            {
+                document.getElementById(`${user.id}$s`).style.display = "none";
+                document.getElementById(`${user.id}#s`).style.display = "none";
+                document.getElementById(`${user.id}%s`).style.display = "none";   
+            }
+        })
+        document.getElementById(`${user.id}$`).addEventListener('click',(e)=>{
+            socket.emit("removeVideo",{
+                id:user.id,
+                roomId: ROOM_ID
+            })
+            document.getElementById(`${user.id}`).click();
+        })
+        document.getElementById(`${user.id}#`).addEventListener('click',()=>{
+            socket.emit("removeAudio",{
+                id:user.id,
+                roomId: ROOM_ID
+            })
+            document.getElementById(`${user.id}`).click();
+        })
+        document.getElementById(`${user.id}%`).addEventListener('click',()=>{
+            socket.emit("removeUser",{
+                id:user.id,
+                roomId: ROOM_ID
+            })
+            document.getElementById(`${user.id}`).click();
+        })
+    } 
+  })
+}
 };
-
 socket.on("participant-list-updated", (users) => {
   createParticipants(users);
 });
-
+socket.on("removeVideo",(data)=>{
+    if(data.id===myId)
+        toggleVideo();
+})
+socket.on("removeAudio",(data)=>{
+    if(data.id===myId)
+        toggleAudio();
+})
+socket.on("removeUser",(data)=>{
+    if(data.id===myId)
+        document.getElementById("closeCall").click();
+})
 const removeParticipant = (id) => {
   const participant = document.querySelector(`[id="${id}"]`);
   participant.remove();
@@ -191,7 +257,8 @@ navigator.mediaDevices
   });
 
 const toggleVideo = function () {
-  if (myVideo.srcObject.getVideoTracks()[0].enabled) {
+    let videoOn = 0;
+    if (myVideo.srcObject.getVideoTracks()[0].enabled) {
     myVideo.srcObject.getVideoTracks()[0].enabled = false;
     videoToggle.innerHTML = '<i class="fa-solid fa-video-slash"></i>';
     document.getElementById("videoSpan").classList.remove("btn-icon");
@@ -201,10 +268,38 @@ const toggleVideo = function () {
     videoToggle.innerHTML = '<i class="fa-solid fa-video"></i>';
     document.getElementById("videoSpan").classList.remove("btn-icon-disable");
     document.getElementById("videoSpan").classList.add("btn-icon");
+    videoOn = 1;
+  }
+  if(isAdmin==='false')
+  {
+  socket.emit("videoAdmin",{
+        roomId:ROOM_ID,
+        id: myId,
+        videoOn:videoOn
+  })
   }
 };
+  socket.on("videoAdmin",(data)=>{
+    if(isAdmin==='true'&&data.id!==myId)
+    {
+        let current_button = document.getElementById(`${data.id}$s`)
+        if(data.videoOn)
+        {
+            current_button.classList.add("btn-icon");
+            current_button.classList.remove("btn-icon-disable");
+            document.getElementById(`${data.id}$`).innerHTML = '<i class="fa-solid fa-video ml-auto"></i>'
+        }
+        else
+        {
+            current_button.classList.add("btn-icon-disable");
+            current_button.classList.remove("btn-icon");
+            document.getElementById(`${data.id}$`).innerHTML = '<i class="fa-solid fa-video-slash ml-auto"></i>'
+        }
+    }
+  })  
 const toggleAudio = function () {
-  if (myVideo.srcObject.getAudioTracks()[0].enabled) {
+    let audioOn = 0;
+    if (myVideo.srcObject.getAudioTracks()[0].enabled) {
     myVideo.srcObject.getAudioTracks()[0].enabled = false;
     audioToggle.innerHTML = '<i class="fa-solid fa-microphone-slash"></i>';
     document.getElementById("audioSpan").classList.remove("btn-icon");
@@ -214,8 +309,35 @@ const toggleAudio = function () {
     audioToggle.innerHTML = '<i class="fa-solid fa-microphone"></i>';
     document.getElementById("audioSpan").classList.remove("btn-icon-disable");
     document.getElementById("audioSpan").classList.add("btn-icon");
+    audioOn = 1;
+  }
+  if(isAdmin==='false')
+  {
+  socket.emit("audioAdmin",{
+        roomId:ROOM_ID,
+        id: myId,
+        audioOn:audioOn
+  })
   }
 };
+socket.on("audioAdmin",(data)=>{
+    if(isAdmin==='true'&&data.id!==myId)
+    {
+        let current_button = document.getElementById(`${data.id}#s`)
+        if(data.audioOn)
+        {
+            current_button.classList.add("btn-icon");
+            current_button.classList.remove("btn-icon-disable");
+            document.getElementById(`${data.id}#`).innerHTML = '<i class="fa-solid fa-microphone ml-auto"></i>';
+        }
+        else
+        {
+            current_button.classList.add("btn-icon-disable");
+            current_button.classList.remove("btn-icon");
+            document.getElementById(`${data.id}#`).innerHTML = '<i class="fa-solid fa-microphone-slash ml-auto"></i>'
+        }
+    }
+  })
 async function recordScreen() {
   return await navigator.mediaDevices.getDisplayMedia({
     audio: true,
