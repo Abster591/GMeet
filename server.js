@@ -4,6 +4,7 @@ const app = express();
 const { v4: uuidV4 } = require("uuid");
 const passport = require("passport");
 const session = require("express-session");
+const nodeSchedule = require("node-schedule");
 
 const authRoutes = require("./auth/authRoutes.js");
 
@@ -26,6 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
@@ -49,6 +51,62 @@ app.post("/", isLoggedIn, (req, res) => {
 app.get("/new_meet", isLoggedIn, (req, res) => {
   const new_room_id = uuidV4();
   res.redirect(`/${new_room_id}`);
+});
+
+app.get("/schedule", isLoggedIn, (req, res) => {
+  res.render("schedule", {
+    username: req.user.displayName,
+    useremail: req.user.emails[0].value,
+  });
+});
+
+const sendMail = require("./util/sendMail.js");
+app.post("/schedule", (req, res) => {
+  let {
+    organiserName,
+    organiserEmail,
+    meetingTitle,
+    meetingDateTime,
+    meetingDescription,
+    participantEmails,
+  } = req.body;
+
+  participantEmails.push(organiserEmail);
+  const meetingId = uuidV4();
+
+  const meetingDate = new Date(meetingDateTime);
+
+  meetingDateTime =
+    meetingDate.toLocaleTimeString() + " " + meetingDate.toLocaleDateString();
+
+  const dateToSendMail = new Date(meetingDate - 15 * 60 * 1000);
+
+  if (dateToSendMail <= Date.now()) {
+    sendMail(
+      organiserName,
+      organiserEmail,
+      meetingTitle,
+      meetingDateTime,
+      meetingDescription,
+      participantEmails,
+      meetingId
+    );
+  } else {
+    console.log(`mail will be sent at ${dateToSendMail}`);
+    nodeSchedule.scheduleJob(dateToSendMail, () => {
+      sendMail(
+        organiserName,
+        organiserEmail,
+        meetingTitle,
+        meetingDateTime,
+        meetingDescription,
+        participantEmails,
+        meetingId
+      );
+    });
+  }
+
+  res.redirect("/");
 });
 
 app.use("/auth", authRoutes);

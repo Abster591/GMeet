@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "tailwind:css": "npx tailwindcss -i ./public/src/input.css -o ./public/dist/output.css"
+    "tailwind:css": "npx tailwindcss -i ./public/src/input.css -o ./public/dist/output.css",
+    "peerjs": "peerjs --port 3001"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,8 @@
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.5",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "peer": "^0.6.1",

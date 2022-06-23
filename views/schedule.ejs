@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./dist/output.css">
+    <link rel="stylesheet" href="schedule.css">
+    <title>Document</title>
+</head>
+<script src="https://kit.fontawesome.com/94d618afb0.js" crossorigin="anonymous"></script>
+
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+
+    <div class="form-wrapper bg-white rounded w-[90%] flex gap-6 py-2 px-10">
+        <div class="meeting-details border-r-2 border-r-blue-600 w-3/5 overflow-auto">
+            <div class="meeting-details-header text-blue-600 text-2xl font-semibold mb-6">
+                Meeting Details
+            </div>
+            <div class="relative z-0 w-full mb-6 group pr-4">
+                <input type="text" id="meeting-title" name="meeting-title"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" " required />
+                <label for="meeting-title"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Meeting
+                    Title</label>
+            </div>
+            <div class="organiser- flex gap-4 pr-4 mb-6">
+                <div>
+                    <label class=" text-gray-700 text-sm font-semibold mb-2" for="organiser-name">
+                        Organiser Name
+                    </label>
+                    <input
+                        class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-600 text-sm"
+                        id="organiser-name" type="text" placeholder="Organiser Name" value="<%=username%>">
+                    <p id="organiser-name-error" class="text-red-500 text-xs italic hidden">Please enter organiser's
+                        name</p>
+                </div>
+                <div class="flex-grow">
+                    <label class=" text-gray-700 text-sm font-semibold mb-2" for="organiser-email">
+                        Organiser Email
+                    </label>
+                    <input
+                        class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-600 text-sm"
+                        id="organiser-email" type="text" placeholder="Organiser Email" value="<%=useremail%>">
+                    <p id="organiser-email-error" class="text-red-500 text-xs italic hidden">Please enter a valid
+                        email.</p>
+                </div>
+            </div>
+            <div class="meeting-time mb-6">
+                <label class=" text-gray-700 text-sm font-semibold mb-2 block" for="date-time">
+                    Meeting Date & Time
+                </label>
+                <input id="meeting-date-time" name="date-time"
+                    class="border py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-600"
+                    type="datetime-local">
+                <p id="date-time-error" class="text-red-500 text-xs italic hidden">Please enter a valid
+                    Date/Time in DD:MM:YYYY HH:MM format</p>
+            </div>
+            <div class=" pr-2">
+                <label class=" text-gray-700 text-sm font-semibold mb-2 block" for="meeting-description">
+                    Meeting Description
+                </label>
+                <textarea id="meeting-description" name="meeting-description"
+                    class="p-2 w-4/5 h-24 border rounded outline-none focus:border-blue-600 text-sm resize-none"></textarea>
+            </div>
+
+        </div>
+        <div class="participants-details flex-grow overflow-auto relative">
+            <div class="meeting-details-header text-blue-600 text-2xl font-semibold mb-6">
+                Participants
+            </div>
+            <div class="relative z-0 w-full mb-6 group pr-4">
+                <input type="email" id="participant-email" name="participant-email"
+                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" " required />
+                <p id="participant-email-error" class="text-red-500 text-xs italic hidden">
+                </p>
+                <label for="participant-email"
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Participant's
+                    email</label>
+            </div>
+            <div id="participant-section" class="rounded-md flex flex-col">
+                <div class="font-semibold text-base shadow-sm mb-4">Invitees</div>
+                <div class="participants text-sm ml-4 overflow-auto">
+                    <ul id="participant-list" class="overflow-auto max-h-48 bg-gray-50">
+
+                    </ul>
+                </div>
+            </div>
+            <button id="submit-details"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded absolute right-2 bottom-2">
+                Schedule meeting
+            </button>
+
+
+        </div>
+
+    </div>
+</body>
+<script src="./scripts/schedule.js"></script>
+
+</html>
