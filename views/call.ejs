@@ -12,6 +12,7 @@
 <script>
     const ROOM_ID = "<%=roomId%>"
     const username = "<%=username%>"
+    const isAdmin = "<%=isAdmin%>"
 </script>
 <script defer src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
 <script src="/socket.io/socket.io.js" defer></script>
@@ -20,7 +21,23 @@
 
 <body class="bg-zinc-900">
     <div class="main__container flex align-center justify-between p-5">
-        <div id="video-grid" class="rounded-md flex justify-center items-center flex-wrap gap-2"></div>
+        <div id="white-board" class="rounded-md flex justify-center items-center flex-wrap gap-2 z-0"><canvas id="canvas" height="500" width="500"></canvas>
+        <div id = colors-cont>
+            <div id = "clear-board" onclick="clearBoard()" class="board-icons"><i class="fas fa-trash-alt"></i></div>
+            <div id = "eraser" onclick = "setEraser()" class="board-icons"><i class="fas fa-eraser"></i></div>
+            <div id="black" onclick="setColor('black')" class="board-icons"></div>
+            <div id="red" onclick="setColor('#e74c3c')" class="board-icons"></div>
+            <div id="yellow" onclick="setColor('#f1c40f')" class="board-icons"></div>
+            <div id="green" onclick="setColor('#badc58')" class="board-icons"></div>
+            <div id="blue" onclick="setColor('#3498db')" class="board-icons"></div>
+            <div id="orange" onclick="setColor('#e67e22')" class="board-icons"></div>
+            <div id="purple" onclick="setColor('#9b59b6')" class="board-icons"></div>
+            <div id="pink" onclick="setColor('#fd79a8')" class="board-icons"></div>
+            <div id="brown" onclick="setColor('#834c32')" class="board-icons"></div>
+            <div id="grey" onclick="setColor('gray')" class="board-icons"></div>
+        </div>
+        </div>
+        <div id="video-grid" class="rounded-md flex justify-center items-center flex-wrap gap-2 z-10"></div>
         <div id="chat-section" class="rounded-md bg-slate-100 text-sm flex flex-col justify-between relative">
             <h2 class="p-5 font-semibold text-xl text-gray-500">Group Chat</h2>
             <div class="chats m-3 h-4/5">
@@ -92,6 +109,8 @@
                         class="fa-solid fa-display"></i></button></span>
             <span class="icon btn-icon rounded-full  bg-red-600 hover:bg-red-700 transition-all"><a
                     href="/close"><button id="closeCall"><i class="fa-solid fa-phone"></i></button></a></span>
+            <span class="icon btn-icon" id="boardSpan"><button id="boardToggle"><i
+                    class="fa-solid fa-chalkboard"></i></button></span>        
         </div>
         <div class="control_icons">
             <span id="btn-chats" class="icon control-icon rounded-full"><button><i

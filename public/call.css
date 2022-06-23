@@ -26,6 +26,84 @@
   align-content: center;
   transition: 0.5s;
 }
+#white-board {
+    width: 100%;
+    height: 85vh;
+    align-content: center;
+    transition: 0.5s;
+}
+#canvas{
+    background-color: white;
+}
+.board-icons
+{
+  height: 30px;
+  width:  30px;
+  border-radius: 40px;
+  margin-top: 10px;
+}
+.board-icons:hover
+{
+    cursor: pointer;
+}
+#clear-board{
+    border-radius: 0;
+    color: #2b2b2b;
+    font-size: 30px;
+ }
+ #eraser
+ {
+     border-radius: 0;
+     color: #2b2b2b;
+     font-size: 30px;   
+ }
+#black
+{
+    background-color: black;
+}
+#red
+{
+    background-color: #e74c3c;
+}
+#yellow
+{
+    background-color: #f1c40f;
+}
+#green
+{
+    background-color: #badc58;
+}
+#blue
+{
+    background-color: #3498db;
+}
+#orange
+{
+    background-color: #e67e22;
+}
+#purple
+{
+    background-color: #9b59b6;
+}
+#pink
+{
+    background-color: #fd79a8;
+}
+#brown
+{
+    background-color: #834c32;
+}
+#grey
+{
+    background-color: grey;
+}
+#colors-cont{
+    position: absolute;
+    left: 150px;
+    top: 80px;
+    display: flex;
+    flex-direction: column;
+}
 
 #chat-section,
 #participant-section,
@@ -65,6 +143,35 @@ textarea {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.btn-icon-admin{
+    margin: 0.25rem;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(63 63 70 / var(--tw-bg-opacity));
+    padding: 0.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .btn-icon-admin:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(39 39 42 / var(--tw-bg-opacity));
+  }
+.btn-icon-admin-disable {
+    margin: 0.25rem;
+    border-radius: 9999px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 8 0 / var(--tw-bg-opacity));
+    padding: 0.5rem;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-icon-admin-disable:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(138 3 3 / var(--tw-bg-opacity));
+  }
 
 .btn-icon-disable:hover {
   --tw-bg-opacity: 1;

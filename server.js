@@ -12,6 +12,11 @@ const dateTime = require("./util/getDateTime.js");
 
 const server = require("http").Server(app);
 
+const users = {};
+
+const roomBoard = {};
+
+
 const isLoggedIn = (req, res, next) => {
   req.user ? next() : res.redirect("/auth/google");
 };
@@ -119,6 +124,7 @@ app.get("/:roomId", isLoggedIn, (req, res) => {
   res.render("call", {
     roomId: req.params.roomId,
     username: req.user.displayName,
+    isAdmin: users[req.params.roomId]?"false":"true"
   });
 });
 
@@ -127,7 +133,7 @@ const io = require("socket.io")(server);
 const port = process.env.PORT;
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
-const users = {};
+
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId, userId, username) => {
@@ -154,4 +160,33 @@ io.on("connection", (socket) => {
   socket.on("chat", function (data) {
     socket.to(data.roomId).emit("chat", data);
   });
+  socket.on("removeVideo",(data)=>{
+    socket.to(data.roomId).emit("removeVideo",data);
+  })
+  socket.on("videoAdmin",(data)=>{
+    socket.to(data.roomId).emit("videoAdmin",data);
+  })
+  socket.on("removeAudio",(data)=>{
+    socket.to(data.roomId).emit("removeAudio",data);
+  })
+  socket.on("audioAdmin",(data)=>{
+    socket.to(data.roomId).emit("audioAdmin",data);
+  })
+  socket.on("removeUser",(data)=>{
+    socket.to(data.roomId).emit("removeUser",data);
+  })
+  socket.on("getCanvas",(roomId)=>{
+    if(roomBoard[roomId])
+        socket.to(roomId).emit("getCanvas",roomBoard[roomId]);
+  })
+  socket.on("storeCanvas",(url,roomId)=>{
+    roomBoard[roomId] = url;
+  })
+  socket.on("clearBoard",(roomId)=>{
+    socket.to(roomId).emit("clearBoard");
+  })
+  socket.on("draw",(newX,newY,x,y,color,drawSize,roomId)=>{
+    socket.to(roomId).emit('draw',newX,newY,x,y,color,drawSize);
+  })
+
 });
