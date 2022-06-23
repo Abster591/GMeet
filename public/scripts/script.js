@@ -12,6 +12,10 @@ let timer = document.createElement("span");
 timer.style.textAlign = "right";
 let int = null;
 let [seconds, minutes, hours] = [0, 0, 0];
+let showingBoard = false;
+const whiteBoard = document.getElementById('white-board');
+whiteBoard.style.display = "none";
+const canvas = document.getElementById('canvas');
 
 const screenShare = document.getElementById("screenShare");
 const peer = new Peer(undefined, {
@@ -158,6 +162,7 @@ const videoToggle = document.getElementById("videoToggle");
 const audioToggle = document.getElementById("audioToggle");
 
 const connectToNewUser = (userId, stream) => {
+  socket.emit('getCanvas',ROOM_ID);
   const conn = peer.connect(userId);
   const call = peer.call(userId, stream);
   // console.log(call);
@@ -409,3 +414,111 @@ const addTimer = function () {
 
   int = setInterval(displayTimer, 1000);
 };
+const boardSpan = document.getElementById('boardSpan')
+document.getElementById('boardToggle').addEventListener('click',()=>{
+    if(showingBoard)
+    {
+        whiteBoard.style.display = "none";
+        videoGrid.style.display = "";
+        boardSpan.classList.add('btn-icon');
+        boardSpan.classList.remove('btn-icon-disable');
+    }    
+    else
+    {
+        whiteBoard.style.display = "";
+        videoGrid.style.display = "none"
+        boardSpan.classList.add('btn-icon-disable');
+        boardSpan.classList.remove('btn-icon');
+    }    
+    showingBoard = !showingBoard;
+})
+canvas.style.width = '85%';
+canvas.style.height = '100%';
+
+canvas.clientWidth = canvas.style.width;
+canvas.clientHeight = canvas.style.height;
+let ctx = canvas.getContext("2d");
+let x;
+let y;
+let isDrawing = false;
+const a = canvas.width;
+const b = canvas.height;
+let drawSize = 2;
+let color = "black";
+let colorOther;
+let drawSizeOther;
+socket.on('getCanvas',(url)=>{
+    let img = new Image();
+    img.onload = start;
+    img.src = url;
+    function start()
+    {
+        ctx.drawImage(img,0,0);
+    }
+})
+function draw(newX,newY,oldX,oldY)
+{ 
+    ctx.strokeStyle = color;
+    ctx.lineWidth  = drawSize;
+    ctx.beginPath();
+    ctx.moveTo(oldX, oldY);
+    ctx.lineTo(newX, newY);
+    ctx.stroke();
+    ctx.closePath();
+    socket.emit('storeCanvas',canvas.toDataURL(),ROOM_ID);
+}
+function drawOther(newX,newY,oldX,oldY)
+{ 
+    ctx.strokeStyle = colorOther;
+    ctx.lineWidth  = drawSizeOther;
+    ctx.beginPath();
+    ctx.moveTo(oldX, oldY);
+    ctx.lineTo(newX, newY);
+    ctx.stroke();
+    ctx.closePath();
+}
+canvas.addEventListener('mousedown', e => {
+    x = e.offsetX*canvas.width / canvas.clientWidth | 0;
+    y = e.offsetY* canvas.height / canvas.clientHeight | 0;
+    isDrawing = 1;
+})
+canvas.addEventListener('mousemove', e => {
+    if (isDrawing) {
+        newX = e.offsetX*canvas.width / canvas.clientWidth | 0;
+        newY =  e.offsetY* canvas.height / canvas.clientHeight | 0;
+        draw(newX, newY, x, y);
+        socket.emit('draw',newX,newY,x,y,color,drawSize,ROOM_ID);
+        x = newX;
+        y = newY;
+    }
+})
+socket.on('draw',(newX,newY,x,y,color,drawSize)=>{
+    colorOther = color;
+    drawSizeOther = drawSize;
+    drawOther(newX,newY,x,y);
+})
+window.addEventListener('mouseup', e => {
+    if (isDrawing) {
+        isDrawing = 0;
+    }
+})
+function clearBoard() {
+    if (window.confirm('Are you sure you want to clear board?')) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        socket.emit('storeCanvas',canvas.toDataURL,ROOM_ID);
+        socket.emit('clearBoard',ROOM_ID);
+    }
+    else return;
+}
+socket.on('clearBoard',()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+})
+function setEraser(){
+    color = "white";
+    drawSize = 10;
+}
+function setColor(newColor)
+{
+    color = newColor;
+    drawSize = 2;
+}   

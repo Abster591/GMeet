@@ -13,6 +13,8 @@ const server = require("http").Server(app);
 
 const users = {};
 
+const roomBoard = {};
+
 
 const isLoggedIn = (req, res, next) => {
   req.user ? next() : res.redirect("/auth/google");
@@ -115,4 +117,18 @@ io.on("connection", (socket) => {
   socket.on("removeUser",(data)=>{
     socket.to(data.roomId).emit("removeUser",data);
   })
+  socket.on("getCanvas",(roomId)=>{
+    if(roomBoard[roomId])
+        socket.to(roomId).emit("getCanvas",roomBoard[roomId]);
+  })
+  socket.on("storeCanvas",(url,roomId)=>{
+    roomBoard[roomId] = url;
+  })
+  socket.on("clearBoard",(roomId)=>{
+    socket.to(roomId).emit("clearBoard");
+  })
+  socket.on("draw",(newX,newY,x,y,color,drawSize,roomId)=>{
+    socket.to(roomId).emit('draw',newX,newY,x,y,color,drawSize);
+  })
+
 });
