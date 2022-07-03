@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dist/output.css">
     <link rel="stylesheet" href="./call.css">
-    <title>Content Page</title>
+    <title>Call</title>
 </head>
 <script>
     const ROOM_ID = "<%=roomId%>"
@@ -100,18 +100,24 @@
             </span>
         </div>
         <div class="icon_list mr-20">
-            <span class="icon btn-icon-disable" id="audioSpan"><button id="audioToggle"><i
-                        class="fa-solid fa-microphone-slash"></i></button></span>
-            <span class="icon btn-icon" id="videoSpan"><button id="videoToggle"><i
-                        class="fa-solid fa-video"></i></button></span>
-            <span class="icon btn-icon" id="videoRecordSpan"><button id="recordToggle"><i
-                        class="fa-solid fa-clapperboard"></i></button></span>
-            <span class="icon btn-icon" id="screenSpan"><button id="screenShare"><i
-                        class="fa-solid fa-display"></i></button></span>
-            <span class="icon btn-icon rounded-full  bg-red-600 hover:bg-red-700 transition-all"><a
-                    href="/close"><button id="closeCall"><i class="fa-solid fa-phone"></i></button></a></span>
-            <span class="icon btn-icon" id="boardSpan"><button id="boardToggle"><i
-                        class="fa-solid fa-chalkboard"></i></button></span>
+            <span class="icon btn-icon-disable group relative" id="audioSpan"><button id="audioToggle"><i
+                        class="fa-solid fa-microphone-slash"></i></button><span
+                    class="absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Audio</span></span>
+            <span class="icon btn-icon group relative" id="videoSpan"><button id="videoToggle"><i
+                        class="fa-solid fa-video"></i></button><span
+                    class="text-sm absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Video</span></span>
+            <span class="icon btn-icon group relative" id="videoRecordSpan"><button id="recordToggle"><i
+                        class="fa-solid fa-clapperboard"></i></button><span
+                    class="absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Record</span></span>
+            <span class="icon btn-icon group relative" id="screenSpan"><button id="screenShare"><i
+                        class="fa-solid fa-display"></i></button><span
+                    class="absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Screenshare</span></span>
+            <span class="icon btn-icon group relative" id="boardSpan"><button id="boardToggle"><i
+                        class="fa-solid fa-chalkboard"></i></button><span
+                    class="absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Whiteboard</span></span>
+            <span class="icon btn-icon rounded-full group relative  bg-red-600 hover:bg-red-700 transition-all"><a
+                    href="/close"><button id="closeCall"><i class="fa-solid fa-phone"></i></button></a><span
+                    class="absolute hidden group-hover:block bottom-full py-2 px-3 bg-gray-800 rounded-md mb-1 left-0">Disconnect</span></span>
         </div>
         <div class="control_icons">
             <span id="btn-chats" class="icon control-icon rounded-full"><button><i

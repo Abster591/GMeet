@@ -481,7 +481,7 @@ let y;
 let isDrawing = false;
 const a = canvas.width;
 const b = canvas.height;
-let drawSize = 2;
+let drawSize = 3;
 let color = "black";
 let colorOther;
 let drawSizeOther;
@@ -553,5 +553,5 @@ function setEraser() {
 }
 function setColor(newColor) {
   color = newColor;
-  drawSize = 2;
+  drawSize = 3;
 }

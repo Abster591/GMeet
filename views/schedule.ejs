@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dist/output.css">
     <link rel="stylesheet" href="schedule.css">
-    <title>Document</title>
+    <title>Schedule</title>
 </head>
 <script src="https://kit.fontawesome.com/94d618afb0.js" crossorigin="anonymous"></script>
 
 <body class="bg-gray-100 flex justify-center items-center h-screen">
 
     <div class="form-wrapper bg-white rounded w-[90%] flex gap-6 py-2 px-10">
-        <div class="meeting-details border-r-2 border-r-blue-600 w-3/5 overflow-auto">
-            <div class="meeting-details-header text-blue-600 text-2xl font-semibold mb-6">
+        <div class="meeting-details border-r-2 border-r-black w-3/5 overflow-auto">
+            <div class="meeting-details-header text-black text-2xl font-semibold mb-6">
                 Meeting Details
             </div>
             <div class="relative z-0 w-full mb-6 group pr-4">
@@ -68,7 +68,7 @@
 
         </div>
         <div class="participants-details flex-grow overflow-auto relative">
-            <div class="meeting-details-header text-blue-600 text-2xl font-semibold mb-6">
+            <div class="meeting-details-header text-black text-2xl font-semibold mb-6">
                 Participants
             </div>
             <div class="relative z-0 w-full mb-6 group pr-4">
@@ -78,7 +78,7 @@
                 <p id="participant-email-error" class="text-red-500 text-xs italic hidden">
                 </p>
                 <label for="participant-email"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Participant's
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-placeholder-shown:scale-100 peer-focus:text-blue-600 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Participant's
                     email</label>
             </div>
             <div id="participant-section" class="rounded-md flex flex-col">
@@ -90,7 +90,7 @@
                 </div>
             </div>
             <button id="submit-details"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded absolute right-2 bottom-2">
+                class="bg-black hover:shadow-2xl text-white font-bold py-2 px-4 rounded absolute right-2 bottom-2 transition-all">
                 Schedule meeting
             </button>
 
