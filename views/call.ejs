@@ -21,21 +21,22 @@
 
 <body class="bg-zinc-900">
     <div class="main__container flex align-center justify-between p-5">
-        <div id="white-board" class="rounded-md flex justify-center items-center flex-wrap gap-2 z-0"><canvas id="canvas" height="500" width="500"></canvas>
-        <div id = colors-cont>
-            <div id = "clear-board" onclick="clearBoard()" class="board-icons"><i class="fas fa-trash-alt"></i></div>
-            <div id = "eraser" onclick = "setEraser()" class="board-icons"><i class="fas fa-eraser"></i></div>
-            <div id="black" onclick="setColor('black')" class="board-icons"></div>
-            <div id="red" onclick="setColor('#e74c3c')" class="board-icons"></div>
-            <div id="yellow" onclick="setColor('#f1c40f')" class="board-icons"></div>
-            <div id="green" onclick="setColor('#badc58')" class="board-icons"></div>
-            <div id="blue" onclick="setColor('#3498db')" class="board-icons"></div>
-            <div id="orange" onclick="setColor('#e67e22')" class="board-icons"></div>
-            <div id="purple" onclick="setColor('#9b59b6')" class="board-icons"></div>
-            <div id="pink" onclick="setColor('#fd79a8')" class="board-icons"></div>
-            <div id="brown" onclick="setColor('#834c32')" class="board-icons"></div>
-            <div id="grey" onclick="setColor('gray')" class="board-icons"></div>
-        </div>
+        <div id="white-board" class="rounded-md flex justify-center items-center flex-wrap gap-2 z-0"><canvas
+                id="canvas" height="500" width="500"></canvas>
+            <div id=colors-cont>
+                <div id="clear-board" onclick="clearBoard()" class="board-icons"><i class="fas fa-trash-alt"></i></div>
+                <div id="eraser" onclick="setEraser()" class="board-icons"><i class="fas fa-eraser"></i></div>
+                <div id="black" onclick="setColor('black')" class="board-icons"></div>
+                <div id="red" onclick="setColor('#e74c3c')" class="board-icons"></div>
+                <div id="yellow" onclick="setColor('#f1c40f')" class="board-icons"></div>
+                <div id="green" onclick="setColor('#badc58')" class="board-icons"></div>
+                <div id="blue" onclick="setColor('#3498db')" class="board-icons"></div>
+                <div id="orange" onclick="setColor('#e67e22')" class="board-icons"></div>
+                <div id="purple" onclick="setColor('#9b59b6')" class="board-icons"></div>
+                <div id="pink" onclick="setColor('#fd79a8')" class="board-icons"></div>
+                <div id="brown" onclick="setColor('#834c32')" class="board-icons"></div>
+                <div id="grey" onclick="setColor('gray')" class="board-icons"></div>
+            </div>
         </div>
         <div id="video-grid" class="rounded-md flex justify-center items-center flex-wrap gap-2 z-10"></div>
         <div id="chat-section" class="rounded-md bg-slate-100 text-sm flex flex-col justify-between relative">
@@ -89,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="control__section w-full p-2 fixed bottom-0 mb-3 text-white flex text-sm justify-between flex-wrap">
+    <div class="control__section w-full p-2 fixed bottom-0 mb-3 text-white flex text-sm justify-between ">
         <div class="meeting_details">
             <span id="time" class="date ml-1 mr-3 border-r-2 border-white pr-5">
                 00:00 AM
@@ -110,7 +111,7 @@
             <span class="icon btn-icon rounded-full  bg-red-600 hover:bg-red-700 transition-all"><a
                     href="/close"><button id="closeCall"><i class="fa-solid fa-phone"></i></button></a></span>
             <span class="icon btn-icon" id="boardSpan"><button id="boardToggle"><i
-                    class="fa-solid fa-chalkboard"></i></button></span>        
+                        class="fa-solid fa-chalkboard"></i></button></span>
         </div>
         <div class="control_icons">
             <span id="btn-chats" class="icon control-icon rounded-full"><button><i

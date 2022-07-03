@@ -1,11 +1,13 @@
 const socket = io("/");
 console.log(ROOM_ID, username, isAdmin);
-console.log(isAdmin === "true");
+
 const chats = document.querySelector(".chats");
 const senders = [];
 const peers = {};
+
 let myId = null;
 let mediaRecorder;
+const userInfo = {};
 let currentlyRecording = false;
 let recordStream;
 let timer = document.createElement("span");
@@ -27,13 +29,15 @@ const createParticipants = (users) => {
   const participantList = document.getElementById("participant__list");
   participantList.innerHTML = "";
   users.forEach((user) => {
+    userInfo[user.id] = user.name;
+    let name = user.name;
+
+    if (user.id == myId) name += " (You)";
     const li = document.createElement("li");
     li.className += "px-5 py-2 flex items-center shadow-sm";
     console.log(isAdmin);
     if (isAdmin === "true" && user.id !== myId) {
-      li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${
-        user.name
-      } </span>
+      li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${name} </span>
     <button class="ml-auto rounded-full px-5 py-2 hover:bg-slate-100 transition-all" style="border-radius:50%;" id=${
       user.id
     }><i class="fa-solid fa-ellipsis-vertical ml-auto"></i></button>
@@ -53,7 +57,7 @@ const createParticipants = (users) => {
         user.id + "%"
       }><i class="fa-solid fa-phone-slash ml-auto"></i></button></span>`;
     } else {
-      li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${user.name} </span>`;
+      li.innerHTML = `<i class="fa-solid fa-user"></i><span class="text-base ml-5">${name} </span>`;
     }
     li.setAttribute("id", user.id);
     li.setAttribute("userid", user.id);
@@ -161,12 +165,41 @@ peer.on("open", (id) => {
   socket.emit("join-room", ROOM_ID, id, username);
 });
 
-const addVideoStream = (video, stream) => {
+const wrapVideoInContainer = (videoElement, userId) => {
+  const videoWrapper = document.createElement("div");
+  videoWrapper.classList.add("video-wrapper");
+  videoWrapper.setAttribute("userId", userId);
+  videoWrapper.append(videoElement);
+  return videoWrapper;
+};
+
+const addVideoStream = (video, stream, userId) => {
   video.srcObject = stream;
   video.addEventListener("loadedmetadata", () => {
     video.play();
   });
-  videoGrid.append(video);
+  const videoWrapper = wrapVideoInContainer(video, userId);
+
+  setTimeout(() => {
+    if (videoWrapper.childElementCount == 0) {
+      videoWrapper.style.display = "none";
+    } else if (userInfo[userId]) {
+      let name = userInfo[userId];
+      if (userId == myId) name += " (You)";
+      const userDetails = document.createElement("div");
+      userDetails.classList.add(
+        "user-info",
+        "text-xs",
+        "text-white",
+        "flex",
+        "justify-center"
+      );
+      userDetails.innerHTML = `<span>${name}</span>`;
+      videoWrapper.append(userDetails);
+    }
+  }, 10);
+  videoGrid.append(videoWrapper);
+  return videoWrapper;
 };
 const videoToggle = document.getElementById("videoToggle");
 const audioToggle = document.getElementById("audioToggle");
@@ -175,14 +208,15 @@ const connectToNewUser = (userId, stream) => {
   socket.emit("getCanvas", ROOM_ID);
   const conn = peer.connect(userId);
   const call = peer.call(userId, stream);
-  // console.log(call);
+
   senders.push(call.peerConnection?.getSenders());
   const video = document.createElement("video");
+  let videoWrapper;
   call.on("stream", (userVideoStream) => {
-    addVideoStream(video, userVideoStream);
+    videoWrapper = addVideoStream(video, userVideoStream, userId);
   });
   call.on("close", () => {
-    video.remove();
+    videoWrapper.remove();
   });
   peers[userId] = call;
 };
@@ -193,17 +227,18 @@ navigator.mediaDevices
     audio: true,
   })
   .then((stream) => {
-    addVideoStream(myVideo, stream);
+    addVideoStream(myVideo, stream, myId);
     peer.on("call", (call) => {
       peers[call.peer] = call;
       call.answer(stream);
       senders.push(call.peerConnection?.getSenders());
       const video = document.createElement("video");
+      let userVideoWrapper;
       call.on("stream", (userVideoStream) => {
-        addVideoStream(video, userVideoStream);
+        userVideoWrapper = addVideoStream(video, userVideoStream, call.peer);
       });
       call.on("close", () => {
-        video.remove();
+        userVideoWrapper.remove();
       });
     });
     socket.on("user-connected", async (userId) => {
